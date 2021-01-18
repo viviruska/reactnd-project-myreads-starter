@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import BookItem from './BookItem'
 
 class HomePage extends Component {
 
@@ -22,18 +23,9 @@ class HomePage extends Component {
 
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {books.map((book) => (
+                      {books.filter((book) => (book.shelf === 'currentlyReading')).map((book) => (
                         <li>
-                          <p>{book.title}</p>
-
-                          <div className="book">
-                            <div className="book-top">
-                              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                              <div className="book-shelf-changer"></div>
-
-                            </div>
-                          </div>
-
+                          <BookItem book={book}/>
                         </li>
                       ))}
                     </ol>

@@ -1,5 +1,4 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
 import './App.css'
 import SearchBooks from './SearchBooks'
 import HomePage from './HomePage'
@@ -44,10 +43,10 @@ export default BooksApp
 
 
 // |-- HomePage
-// |   |-- BookShelves
-// |       |-- Category
-// |       |-- BookList
+// |   |-- Category
+// |   |-- BookItem
+// |   |   |-- Controller
 // |   |-- Link to SearchBooks
 // |
 // |-- SearchBooks
-//     |-- 
+ 
