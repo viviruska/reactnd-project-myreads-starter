@@ -41,4 +41,6 @@ export const search = (query) =>
     },
     body: JSON.stringify({ query })
   }).then(res => res.json())
-    .then(data => data.books)
+    .then(data => data.books) 
+
+export const update2 = (book, shelf) => fetch(`${api}`)
