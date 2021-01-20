@@ -43,7 +43,7 @@ export default BooksApp
 
 
 // |-- HomePage
-// |   |-- Category
+// |   |
 // |   |-- BookItem
 // |   |   |-- Controller
 // |   |-- Link to SearchBooks

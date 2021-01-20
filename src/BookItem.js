@@ -1,21 +1,41 @@
 import React, { Component } from 'react'
+import * as BooksAPI from './BooksAPI'
 
 class BookItem extends Component {
 
+  updateBookShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+    .then((book) => {
+      console.log(book)
+    })
+  }
+
+  // don’t default to the first value, but to the shelf of the book.
+  // For the option you want to be the default, React, instead of using the selected attribute, 
+  // uses a value attribute on the root select tag
+  handleChange = (book, event) => {
+    const shelf = event.target.value;
+    // update bookshelf in the DB
+    alert(event.target.value);
+    this.updateBookShelf(book, shelf);
+  }
+
   render() {
-    const {book} = this.props;
-    
+    const {book, shelves, defaultShelf} = this.props;
+
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+          <div 
+            className="book-cover" 
+            style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
+          </div>
           <div className="book-shelf-changer">
-            <select>
+            <select value={defaultShelf} onChange={(e) => this.handleChange(book, e)}>
               <option value="move" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
+              {shelves.map((shelf) => (
+                <option value={shelf.name} key={shelf.name}>{shelf.title}</option>
+              ))}
             </select>
           </div>
         </div>
