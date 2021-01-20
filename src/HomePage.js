@@ -1,26 +1,13 @@
 import React, { Component } from 'react'
 import BookItem from './BookItem'
 import { Link } from 'react-router-dom'
+import * as Utils from './Utils'
 
 class HomePage extends Component {
 
   render() {
     const { books } = this.props;
-
-    const shelves = [
-      {
-        'title': 'Currently Reading',
-        'name': 'currentlyReading'
-      },
-      {
-        'title': 'Want to Read', 
-        'name': 'wantToRead'
-      },
-      {
-        'title': 'Read', 
-        'name': 'read'
-      }
-    ]
+    const shelves = Utils.shelves;
 
     return (
 
@@ -43,7 +30,6 @@ class HomePage extends Component {
                       <li key={book.id}>
                         <BookItem 
                           book={book}
-                          shelves={shelves}
                           defaultShelf={book.shelf}
                         />
                       </li>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
+import * as Utils from './Utils'
 
 class BookItem extends Component {
 
@@ -21,7 +22,8 @@ class BookItem extends Component {
   }
 
   render() {
-    const {book, shelves, defaultShelf} = this.props;
+    const {book, defaultShelf} = this.props;
+    const shelves = Utils.shelves;
 
     return (
       <div className="book">

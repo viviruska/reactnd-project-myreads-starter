@@ -1,7 +1,33 @@
 import React, { Component } from 'react'
+import * as BooksAPI from './BooksAPI'
+import BookItem from './BookItem'
 
 class SearchBooks extends Component {
+
+  state = {
+    query: '',
+    filteredBooks: []
+  }
+
+  queryDatabase = (query) => {
+    BooksAPI.search(query)
+    .then((data) => {
+      this.setState(() => ({
+        filteredBooks: data
+      }));
+    });
+  }
+
+  updateQuery = (query) => {
+    this.setState(() => ({
+      query: query.trim()
+    }));
+    this.queryDatabase(query);
+  }
+
   render() {
+    const { query, filteredBooks } = this.state;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -15,11 +41,28 @@ class SearchBooks extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
               */}
-              <input type="text" placeholder="Search by title or author"/>
+              <input 
+                type="text"
+                placeholder="Search by title or author"
+                value={query}
+                onChange={(event) => this.updateQuery(event.target.value)}
+              />
             </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {/* expand this to show result
+            TODO: make reused code from HomePage.js DRY */}
+            {filteredBooks.map((book) => (
+              <li key={book.id}>
+                <BookItem 
+                  book={book}
+                  // shelves={utils.shelves}
+                  defaultShelf={book.shelf}
+                />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     )
