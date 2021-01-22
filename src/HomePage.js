@@ -5,9 +5,19 @@ import * as Utils from './Utils'
 
 class HomePage extends Component {
 
+  updateBook = (book, shelf) => {
+
+    if (this.props.onChangeShelf) {
+      this.props.onChangeShelf(book, shelf);
+    }
+  }
+
   render() {
     const { books } = this.props;
     const shelves = Utils.shelves;
+
+    console.log("rendering Homepage")
+    console.log(books)
 
     return (
 
@@ -18,7 +28,7 @@ class HomePage extends Component {
 
         <div className="list-books-content">
 
-          {shelves.map((shelf) => (
+          {shelves.filter((shelf) => (shelf.name !== 'none')).map((shelf) => (
             <div key={shelf.name}>
               <div className="bookshelf">
               
@@ -31,6 +41,7 @@ class HomePage extends Component {
                         <BookItem 
                           book={book}
                           defaultShelf={book.shelf}
+                          onUpdateBook={(book, shelf) => {this.updateBook(book, shelf)}}
                         />
                       </li>
                     ))}

@@ -4,7 +4,7 @@ import * as Utils from './Utils'
 
 class BookItem extends Component {
 
-  updateBookShelf = (book, shelf) => {
+  updateBookShelfDB = (book, shelf) => {
     BooksAPI.update(book, shelf)
     .then((book) => {
       console.log(book)
@@ -17,8 +17,11 @@ class BookItem extends Component {
   handleChange = (book, event) => {
     const shelf = event.target.value;
     // update bookshelf in the DB
-    alert(event.target.value);
-    this.updateBookShelf(book, shelf);
+    this.updateBookShelfDB(book, shelf);
+
+    if (this.props.onUpdateBook) {
+      this.props.onUpdateBook(book, shelf);
+    }
   }
 
   render() {
