@@ -22,14 +22,21 @@ class SearchBooks extends Component {
       this.setState(() => ({
         filteredBooks: data
       }));
-    });
+    }).catch(function(error) {
+      this.setState({filteredBooks: []})
+    }.bind(this))
   }
 
   updateQuery = (query) => {
     this.setState(() => ({
-      query: query.trim()
+      query
     }));
-    this.queryDatabase(query);
+
+    if (query) {
+      this.queryDatabase(query);
+    } else {
+      this.setState({filteredBooks: []})
+    }  
   }
 
   /**
@@ -114,7 +121,7 @@ class SearchBooks extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link 
+          <Link
             className="close-search"
             to="/">
           </Link>
@@ -129,7 +136,7 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {filteredBooks.map((book) => (
+            {(filteredBooks && filteredBooks.length > 0) ? filteredBooks.map((book) => (
               <li key={book.id}>
                 <BookItem 
                   book={book}
@@ -137,7 +144,7 @@ class SearchBooks extends Component {
                   onUpdateBook={(book, shelf) => {this.updateBook(book, shelf)}}
                 />
               </li>
-            ))}
+            )) : 'No result, please try again'}
           </ol>
         </div>
       </div>

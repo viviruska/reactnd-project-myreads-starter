@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as Utils from './Utils'
 import PropTypes from 'prop-types'
+import Controller from './Controller'
 
 class BookItem extends Component {
 
@@ -8,14 +9,6 @@ class BookItem extends Component {
     book: PropTypes.object.isRequired,
     defaultShelf: PropTypes.string,
     onUpdateBook: PropTypes.func.isRequired,
-  }
-
-  handleChange = (book, event) => {
-    const shelf = event.target.value;
-
-    if (this.props.onUpdateBook) {
-      this.props.onUpdateBook(book, shelf);
-    }
   }
 
   render() {
@@ -27,22 +20,24 @@ class BookItem extends Component {
         <div className="book-top">
           <div 
             className="book-cover" 
-            style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
+            style={{ 
+                width: 128, 
+                height: 193, 
+                backgroundImage: (book.imageLinks && book.imageLinks.thumbnail) ? `url(${book.imageLinks.thumbnail})` :'' }}>
           </div>
-          <div className="book-shelf-changer">
-            <select value={defaultShelf} onChange={(e) => this.handleChange(book, e)}>
-              {/* For the option you want to be the default, React uses a value attribute on the root select tag */}
-              <option value="move" disabled>Move to...</option>
-              {shelves.map((shelf) => (
-                <option value={shelf.name} key={shelf.name}>{shelf.title}</option>
-              ))}
-            </select>
-          </div>
+          <Controller
+            book={book}
+            defaultShelf={defaultShelf}
+            shelves={shelves}
+            onUpdateBook={(book, shelf) => {this.props.onUpdateBook(book, shelf)}}
+          />
         </div>
         <div className="book-title">{book.title}</div>
-        {book.authors.map((author, index) => (
-          <div className="book-authors" key={index}>{author}</div>
-        ))}
+        {(book && book.authors) 
+          ? book.authors.map((author, index) => (
+              <div className="book-authors" key={index}>{author}</div>
+            )) 
+          : ''}
       </div>
     )
   }
