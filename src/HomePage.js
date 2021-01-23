@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 class HomePage extends Component {
 
-  static PropTypes = {
+  static propTypes = {
     books: PropTypes.array.isRequired,
     onChangeShelf: PropTypes.func.isRequired,
   }

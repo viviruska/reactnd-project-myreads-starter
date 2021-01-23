@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 
 class BookItem extends Component {
 
-  static PropTypes = {
+  static propTypes = {
     book: PropTypes.object.isRequired,
-    defaultShelf: PropTypes.string.isRequired,
+    defaultShelf: PropTypes.string,
     onUpdateBook: PropTypes.func.isRequired,
   }
 
@@ -40,7 +40,9 @@ class BookItem extends Component {
           </div>
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors}</div>
+        {book.authors.map((author, index) => (
+          <div className="book-authors" key={index}>{author}</div>
+        ))}
       </div>
     )
   }
