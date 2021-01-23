@@ -15,42 +15,75 @@ class BooksApp extends React.Component {
     .then((books) => {
       this.setState(() => ({
         books
-      }))
-    })
+      }));
+    });
   }
 
+  /**
+   * Says whether a book already belongs to a shelf. (category is not None)
+   * 
+   * @param {string} bookId - the ID of the book
+   */
   bookIsOnShelf = (bookId) => {
-    /**
-    * @description Says whether a book already belongs to a shelf. (category is not None)
-    * @constructor
-    * @param {string} bookId - The ID of the book
-    */
-    const filteredList = this.state.books.filter((book) => (bookId === book.id))
-    return filteredList.length ? true : false
+    const filteredList = this.state.books.filter((book) => (bookId === book.id));
+    return filteredList.length ? true : false;
   }
 
-  changeShelf = (book, shelf) => {
-    /**
-    * @description  a shelf. (category is not None)
-    * @param {book} bookId - The ID of the book
-    * @param {shelf}
-    */
+  updateBookShelfDB = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+    .then((book) => {
+      console.log(book);
+    });
+  }
+
+  /**
+   * If a book to be updated already is on a shelf, we want to remove it from 
+   * the state and concatenate on an updated book object.
+   * In case of a book is just about to make it to a shelf (from shelf None), 
+   * there's no risk of duplication, simply add it to the state.
+   * 
+   * @param {object} book  - book object we are updating/adding
+   * @param {string} shelf - name of the new shelf 
+   */
+  updateBookShelfState = (book, shelf) => {
     if (this.bookIsOnShelf(book.id)) {
-      this.setState({books: this.state.books.filter((item) => (item.id !== book.id))})
+      this.setState({
+        books: this.state.books.filter((item) => (item.id !== book.id))
+      });
     }
+
     book.shelf = shelf
     this.setState((currentState) => ({
         books: currentState.books.concat([book])
-    }))
+    }));
   }
 
+  /**
+   * We need to make sure that we change our book's shelf with the API and we 
+   * also update our local state.
+   * 
+   * @param {object} book - book object we're updating
+   * @param {string} shelf - name of the new shelf 
+   */
+  changeShelf = (book, shelf) => {
+   this.updateBookShelfDB(book, shelf);
+   this.updateBookShelfState(book, shelf);
+  }
+
+  /**
+   * Route:
+   * To keep track of which page we're on, we use the URL in the browser's 
+   * address bar. This will ensure that users can use the browser's back and 
+   * forward buttons to navigate between pages, as well as provide a good URL 
+   * they can bookmark and share.
+   * 
+   * Props:
+   * onChangeShelf prop is going to be a function, and when this function is 
+   * invoked, we call this.changeShelf that we created above. 
+   * We also want to pass it the book and shelf that we're getting when 
+   * onChangeShelf is invoked.
+   */
   render() {
-    /**
-     * To keep track of which page we're on, use the URL in the browser's address 
-     * bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     return (
       <div className="app">
         <Route exact path="/" render={() => (

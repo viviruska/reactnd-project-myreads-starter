@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import BookItem from './BookItem'
 import { Link } from 'react-router-dom'
 import * as Utils from './Utils'
+import PropTypes from 'prop-types'
 
 class HomePage extends Component {
 
-  updateBook = (book, shelf) => {
+  static PropTypes = {
+    books: PropTypes.array.isRequired,
+    onChangeShelf: PropTypes.func.isRequired,
+  }
 
+  updateBook = (book, shelf) => {
     if (this.props.onChangeShelf) {
       this.props.onChangeShelf(book, shelf);
     }
@@ -15,9 +20,6 @@ class HomePage extends Component {
   render() {
     const { books } = this.props;
     const shelves = Utils.shelves;
-
-    console.log("rendering Homepage")
-    console.log(books)
 
     return (
 
